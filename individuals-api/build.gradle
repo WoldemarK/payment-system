@@ -4,14 +4,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id "org.openapi.generator" version "7.3.0"
 }
-
 openApiGenerate {
     generatorName = "spring"
-    inputSpec = "${projectDir}/openapi/individuals-api.yaml"
-    outputDir = "${buildDir}/generated"
+    inputSpec.set("${projectDir}/../openapi/individuals-api.yaml")
+    outputDir.set("$buildDir/generated-src/openapi")
     apiPackage = "com.kovtynov.individuals.api.client"
     modelPackage = "com.kovtynov.individuals.api.dto"
-    validateSpec = false // Временно отключаем валидацию
+    validateSpec = false
 
     configOptions = [
             useSpringBoot3: "true",
@@ -20,18 +19,29 @@ openApiGenerate {
             skipDefaultInterface: "true",
             openApiNullable: "false"
     ]
+}
 
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated-src/openapi/src/main/java"
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn('openApiGenerate')
 }
 
 ext {
     set('snakeyaml.version', '2.0')
 }
 group = 'com.kovtynov'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
