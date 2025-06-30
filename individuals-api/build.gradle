@@ -2,14 +2,36 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "org.openapi.generator" version "7.3.0"
 }
 
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "${projectDir}/openapi/individuals-api.yaml"
+    outputDir = "${buildDir}/generated"
+    apiPackage = "com.kovtynov.individuals.api.client"
+    modelPackage = "com.kovtynov.individuals.api.dto"
+    validateSpec = false // Временно отключаем валидацию
+
+    configOptions = [
+            useSpringBoot3: "true",
+            interfaceOnly: "true",
+            reactive: "true",
+            skipDefaultInterface: "true",
+            openApiNullable: "false"
+    ]
+
+}
+
+ext {
+    set('snakeyaml.version', '2.0')
+}
 group = 'com.kovtynov'
 version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(24)
     }
 }
 
@@ -24,11 +46,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
