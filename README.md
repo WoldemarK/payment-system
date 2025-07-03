@@ -36,6 +36,9 @@ docker-compose up --build -d
 * 1860 Node Exporter Full
 * https://grafana.com/grafana/dashboards/
 
+## loki
+* http://localhost:3100/loki/api/v1/label/job/values
+
 ## Архитектура проекта
 Проект оформлен как монорепозиторий, в котором:
 
