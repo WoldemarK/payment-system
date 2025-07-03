@@ -1,8 +1,8 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.3'
-    id 'io.spring.dependency-management' version '1.1.7'
-    id "org.openapi.generator" version "7.3.0"
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id "org.openapi.generator" version "$openapiGenerator"
 }
 openApiGenerate {
     generatorName = "spring"
@@ -36,8 +36,8 @@ tasks.named('compileJava') {
 ext {
     set('snakeyaml.version', '2.0')
 }
-group = 'com.kovtynov'
-version = '1.0.0-SNAPSHOT'
+group = "$groupID"
+version = "$appVersion"
 
 java {
     toolchain {
@@ -63,6 +63,7 @@ dependencies {
     implementation 'javax.validation:validation-api:2.0.1.Final'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
 }
 
 tasks.named('test') {
