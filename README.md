@@ -31,7 +31,11 @@ docker-compose up --build -d
 ```bash
 ./gradlew clean openApiGenerate build
 ```
-
+## Grafana dashboard
+* 9628 PostgreSQL Database
+* 1860 Node Exporter Full
+* https://grafana.com/grafana/dashboards/
+* 
 ## Архитектура проекта
 Проект оформлен как монорепозиторий, в котором:
 
