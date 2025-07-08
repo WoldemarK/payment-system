@@ -6,7 +6,7 @@ spring:
     name: individuals-api
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/events_db
+    url: jdbc:postgresql://keycloak-postgres:5432/keycloak
     username: user
     password: password
 
