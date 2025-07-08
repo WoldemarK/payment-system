@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id "org.openapi.generator" version "$openapiGenerator"
+}
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec.set("${projectDir}/openapi/individuals-api.yaml")
+    outputDir.set("$buildDir/generated-src/openapi")
+    apiPackage = "com.kovtynov.individuals.api.client"
+    modelPackage = "com.kovtynov.individuals.api.dto"
+    validateSpec = false
+
+    configOptions = [
+            useSpringBoot3: "true",
+            interfaceOnly: "true",
+            reactive: "true",
+            skipDefaultInterface: "true",
+            openApiNullable: "false"
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated-src/openapi/src/main/java"
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn('openApiGenerate')
+}
+
+ext {
+    set('snakeyaml.version', '2.0')
+}
+
+group = "com.kovtynov"
+version = "$appVersion"
+sourceCompatibility = "21"
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://packages.confluent.io/maven/'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
