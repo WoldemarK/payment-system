@@ -5,15 +5,31 @@ spring:
   application:
     name: individuals-api
 
-  datasource:
-    url: jdbc:postgresql://keycloak-postgres:5432/keycloak
-    username: user
-    password: password
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: individuals-api-client
+            client-secret: imuzN9HvrJsulcg7SjfkZZ28RHHKddcN
+            client-name: individuals-api-client
+            authorization-grant-type: authorization_code
+            scope: openid, profile, email
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/individuals-api-realm
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+#
+#  datasource:
+#    url: jdbc:postgresql://keycloak-postgres:5432/keycloak
+#    username: user
+#    password: password
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
 
 management:
   endpoints:
@@ -27,3 +43,6 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+keycloak:
+  url: http://localhost:8080/realms/individuals-api-realm/protocol/openid-connect/auth

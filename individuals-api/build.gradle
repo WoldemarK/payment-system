@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "$springBootVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
-    id "org.openapi.generator" version "$openapiGenerator"
+    id "org.openapi.generator" version "$openApiGeneratorPluginVersion"
 }
 openApiGenerate {
     generatorName = "spring"
@@ -12,14 +12,12 @@ openApiGenerate {
     modelPackage = "com.kovtynov.individuals.api.dto"
     validateSpec = false
 
-    configOptions = [
-            useSpringBoot3: "true",
-            interfaceOnly: "true",
-            reactive: "true",
-            skipDefaultInterface: "true",
-            openApiNullable: "false"
-    ]
+    configOptions = [library        : "spring-cloud",
+                     useFeignClients: "true",
+                     interfaceOnly  : "true",
+                     useJakartaEe   : "true"]
 }
+compileJava.dependsOn 'openApiGenerate'
 
 sourceSets {
     main {
@@ -39,7 +37,7 @@ ext {
 
 group = "com.kovtynov"
 version = "$appVersion"
-sourceCompatibility = "21"
+sourceCompatibility = JavaVersion.VERSION_24
 
 repositories {
     mavenCentral()
@@ -50,19 +48,51 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+
+    // OPEN API
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0'
+
+    // VALIDATION
     implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    // LOMBOK
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
+
+    // METRICS
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
 
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
 
+    // SECURITY
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    // TEST
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation platform("org.junit:junit-bom:$junitBomVersion")
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
+test {
+    useJUnitPlatform()
+    include '**/*'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir layout.buildDirectory.dir('generated/src/main/java')
+        }
+    }
+    test {
+        java {
+            srcDir layout.buildDirectory.dir('generated/src/main/java')
+        }
+    }
+}

@@ -34,7 +34,12 @@ docker-compose up --build -d
 ## Команда для проверки health
 ```bash
 curl http://localhost:8081/actuator/health
+
+```bash
+curl http://localhost:8081/actuator
 ```
+## Keycloak
+http://localhost:8080/realms/individuals-api-realm/.well-known/openid-configuration
 
 ## Grafana dashboard
 * 9628 PostgreSQL Database

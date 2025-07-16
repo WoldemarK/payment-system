@@ -1,44 +1,46 @@
 package com.kovtynov.individualsapi.rest;
 
-import com.kovtynov.individuals.api.dto.TokenResponse;
-import com.kovtynov.individuals.api.dto.UserInfoResponse;
-import com.kovtynov.individuals.api.dto.UserLoginRequest;
-import com.kovtynov.individuals.api.dto.UserRegistrationRequest;
+import com.kovtynov.individuals.api.client.AuthApi;
+import com.kovtynov.individuals.api.dto.*;
 import com.kovtynov.individualsapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth")
-public class AuthController {
+public class AuthController  {
 
     private final UserService userService;
 
-    @GetMapping("/me")
-    public UserInfoResponse index() {
+
+    @GetMapping("/hello")
+    public String hello_message(){
+        return "Hello";
+    }
+
+
+    public Mono<ResponseEntity<TokenResponse>> authLoginPost(Mono<UserLoginRequest> userLoginRequest, ServerWebExchange exchange) {
         return null;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserLoginRequest request) {
-        log.info("login  {}", request);
-        return "OK";
-    }
 
-    @PostMapping("/refresh")
-    public TokenResponse refresh(@RequestBody TokenResponse token) {
+    public Mono<ResponseEntity<UserInfoResponse>> authMeGet(ServerWebExchange exchange) {
         return null;
     }
 
-    @PostMapping("/registration")
-    public Mono<ResponseEntity<TokenResponse>> register(@RequestBody UserRegistrationRequest request) {
-        return userService.register(request)
-                .map(tokenResponse -> ResponseEntity.status(HttpStatus.CREATED).body(tokenResponse));
+
+    public Mono<ResponseEntity<TokenResponse>> authRefreshTokenPost(Mono<TokenRefreshRequest> tokenRefreshRequest, ServerWebExchange exchange) {
+        return null;
+    }
+
+
+    public Mono<ResponseEntity<TokenResponse>> authRegistrationPost(Mono<UserRegistrationRequest> userRegistrationRequest, ServerWebExchange exchange) {
+        return null;
     }
 }
