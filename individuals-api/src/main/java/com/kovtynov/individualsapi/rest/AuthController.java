@@ -14,33 +14,34 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth")
-public class AuthController  {
+public class AuthController  implements  AuthApi {
 
     private final UserService userService;
 
 
     @GetMapping("/hello")
-    public String hello_message(){
+    public String hello_message() {
         return "Hello";
     }
 
 
-    public Mono<ResponseEntity<TokenResponse>> authLoginPost(Mono<UserLoginRequest> userLoginRequest, ServerWebExchange exchange) {
+    @Override
+    public ResponseEntity<TokenResponse> authLoginPost(UserLoginRequest userLoginRequest) {
         return null;
     }
 
-
-    public Mono<ResponseEntity<UserInfoResponse>> authMeGet(ServerWebExchange exchange) {
+    @Override
+    public ResponseEntity<UserInfoResponse> authMeGet() {
         return null;
     }
 
-
-    public Mono<ResponseEntity<TokenResponse>> authRefreshTokenPost(Mono<TokenRefreshRequest> tokenRefreshRequest, ServerWebExchange exchange) {
+    @Override
+    public ResponseEntity<TokenResponse> authRefreshTokenPost(TokenRefreshRequest tokenRefreshRequest) {
         return null;
     }
 
-
-    public Mono<ResponseEntity<TokenResponse>> authRegistrationPost(Mono<UserRegistrationRequest> userRegistrationRequest, ServerWebExchange exchange) {
+    @Override
+    public ResponseEntity<TokenResponse> authRegistrationPost(UserRegistrationRequest userRegistrationRequest) {
         return null;
     }
 }
