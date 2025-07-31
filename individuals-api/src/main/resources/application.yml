@@ -1,0 +1,50 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: individuals-api
+  config:
+    import: classpath:app.yml
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+          provider: ${app.auth.provider}
+          client-id: ${app.auth.client-id}
+          client-secret: ${app.auth.client-secret}
+          client-name: ${app.auth.client-name}
+          authorization-grant-type: ${app.auth.grant-type}
+          scope: ${app.auth.scope}
+      resource-server:
+        jwt:
+          issuer-uri: ${app.keycloak.issuer-uri}
+
+keycloak:
+  url: ${app.keycloak.auth-url}
+
+
+controllerUrl:
+  createUserUrl: ${app.controller.create-user-url}
+  requestTokenUrl: ${app.controller.request-token-url}
+  refreshTokenUrl: ${app.controller.refresh-token-url}
+  fetchUserInfoUrl: ${app.controller.fetch-user-info-url}
+
+REALM_CONTROLLER:
+  clientName: ${app.realm-controller.clientName}
+  client_id: ${app.realm-controller.client_id}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+       enabled: true
+  endpoint:
+    prometheus:
+      enabled: true

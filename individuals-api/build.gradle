@@ -1,0 +1,107 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "$springBootVersion"
+    id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id "org.openapi.generator" version "$openApiGeneratorPluginVersion"
+}
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec.set("${projectDir}/openapi/individuals-api.yaml")
+    outputDir.set("$buildDir/generated-src/openapi")
+    apiPackage = "com.kovtynov.individuals.api.client"
+    modelPackage = "com.kovtynov.individuals.api.dto"
+    validateSpec = false
+
+    configOptions = [library        : "spring-cloud",
+                     useFeignClients: "true",
+                     interfaceOnly  : "true",
+                     useJakartaEe   : "true"]
+}
+compileJava.dependsOn 'openApiGenerate'
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated-src/openapi/src/main/java"
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn('openApiGenerate')
+}
+
+ext {
+    set('snakeyaml.version', '2.0')
+}
+
+group = "com.kovtynov"
+version = "$appVersion"
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
+}
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // OPEN API
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openapiStarterWebfluxVersion}"
+
+    // VALIDATION
+    implementation "javax.validation:validation-api:${validationApiVersion}"
+    implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+
+    // LOMBOK
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // METRICS
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
+
+    // SECURITY
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    //  ЗАВИСИМОСТИ ДЛЯ ТЕСТИРОВАНИЯ
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation platform("org.junit:junit-bom:$junitBomVersion")
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${junitJupiter}"
+    testImplementation "com.github.dasniko:testcontainers-keycloak:${testcontainersKeycloakVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'io.projectreactor:reactor-test'
+
+    //  AspectJ
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+}
+
+test {
+    useJUnitPlatform()
+    include '**/*'
+    jvmArgs '-Xmx2g', '-XX:+UseG1GC'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir layout.buildDirectory.dir('generated/src/main/java')
+        }
+    }
+    test {
+        java {
+            srcDir layout.buildDirectory.dir('generated/src/main/java')
+        }
+    }
+}

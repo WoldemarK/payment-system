@@ -1,0 +1,26 @@
+app:
+  auth:
+    provider: keycloak
+    client-id: individuals-api-client
+    client-secret: imuzN9HvrJsulcg7SjfkZZ28RHHKddcN
+    client-name: individuals-api-client
+    grant-type: authorization_code
+    scope:
+      - openid
+      - profile
+      - email
+
+  keycloak:
+    issuer-uri: http://localhost:8080/realms/individuals-api-realm
+    auth-url: http://localhost:8080/realms/individuals-api-realm/protocol/openid-connect/auth
+
+  controller:
+    create-user-url: /admin/realms/individuals-api-realm/users
+    request-token-url: /protocol/openid-connect/token
+    refresh-token-url: /protocol/openid-connect/token
+    fetch-user-info-url: /admin/realms/individuals-api-realm/users/id
+
+  realm-controller:
+    clientName: individuals-api-client
+    client_id: individuals-api-client
+
