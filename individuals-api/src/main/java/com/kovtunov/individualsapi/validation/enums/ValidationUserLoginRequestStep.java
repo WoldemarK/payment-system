@@ -1,7 +1,7 @@
 package com.kovtunov.individualsapi.validation.enums;
 
+import com.kovtunov.individualsapi.exception.PasswordException;
 import com.kovtynov.individuals.api.dto.UserLoginRequest;
-import com.kovtynov.individualsapi.exception.PasswordException;
 import org.springframework.http.HttpStatus;
 
 public enum ValidationUserLoginRequestStep {
