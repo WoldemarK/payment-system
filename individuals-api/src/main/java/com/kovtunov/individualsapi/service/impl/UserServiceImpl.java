@@ -3,6 +3,7 @@ package com.kovtunov.individualsapi.service.impl;
 import com.kovtunov.individualsapi.client.KeycloakClient;
 import com.kovtunov.individualsapi.service.TokenService;
 import com.kovtunov.individualsapi.service.UserService;
+import com.kovtynov.individuals.api.dto.TokenRefreshRequest;
 import com.kovtynov.individuals.api.dto.TokenResponse;
 import com.kovtynov.individuals.api.dto.UserInfoResponse;
 import com.kovtynov.individuals.api.dto.UserRegistrationRequest;
@@ -41,4 +42,13 @@ public class UserServiceImpl implements UserService {
         return keycloakClient.fetchUserInfo(userId);
     }
 
+    /**
+     * @param tokenRefreshRequest
+     * @return TokenResponse
+     * 
+     */
+    @Override
+    public Mono<TokenResponse> authRefreshTokenPost(TokenRefreshRequest tokenRefreshRequest) {
+        return tokenService.refresh(tokenRefreshRequest.toString());
+    }
 }

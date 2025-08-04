@@ -52,4 +52,5 @@ public class TokenServiceImpl implements TokenService {
         log.debug("Method requestToken : {},{}", username, password);
         return keycloakClient.requestToken(username, password);
     }
+
 }

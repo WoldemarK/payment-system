@@ -1,4 +1,5 @@
 package com.kovtunov.individualsapi.it;
+
 import com.kovtunov.individualsapi.client.KeycloakClient;
 import com.kovtunov.individualsapi.service.impl.TokenServiceImpl;
 import com.kovtunov.individualsapi.service.impl.UserServiceImpl;
@@ -32,17 +33,42 @@ class AuthControllerImplTest {
 
     @Test
     void registerUserSuccess() {
-        when(keycloakClient.createUser("alice@example.com", "password")).thenReturn(Mono.empty());
+        when(keycloakClient.createUser
+                (
+                        DataUtilsDto.getInstance().getEmail(),
+                        DataUtilsDto.getInstance().getPassword())
+        ).thenReturn(Mono.empty());
+
         TokenResponse tokens = DataUtilsDto.getToken();
 
-        when(tokenService.login("alice@example.com", "password")).thenReturn(Mono.just(tokens));
+        when(tokenService.login
+                (
+                        DataUtilsDto.getInstance().getEmail(),
+                        DataUtilsDto.getInstance().getPassword())
+        ).thenReturn(Mono.just(tokens));
 
-        Mono<TokenResponse> resultMono = userService.register(new UserRegistrationRequest("alice@example.com", "password", "password"));
+        Mono<TokenResponse> resultMono = userService.register
+                (
+                        new UserRegistrationRequest
+                                (
+                                        DataUtilsDto.getInstance().getEmail(),
+                                        DataUtilsDto.getInstance().getPassword(),
+                                        DataUtilsDto.getInstance().getConfirmPassword()
+                                )
+                );
         TokenResponse result = resultMono.block();
         assertNotNull(result);
         assertEquals("fakeAccess", result.getAccessToken());
 
-        verify(keycloakClient, times(1)).createUser("alice@example.com", "password");
-        verify(tokenService, times(1)).login("alice@example.com", "password");
+        verify(keycloakClient, times(1)).createUser
+                (
+                        DataUtilsDto.getInstance().getEmail(),
+                        DataUtilsDto.getInstance().getPassword()
+                );
+        verify(tokenService, times(1)).login
+                (
+                        DataUtilsDto.getInstance().getEmail(),
+                        DataUtilsDto.getInstance().getPassword()
+                );
     }
 }

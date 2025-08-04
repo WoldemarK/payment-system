@@ -40,7 +40,6 @@ import reactor.core.publisher.Mono;
 public class AuthControllerImpl {
 
     private final UserService userService;
-    private TokenService tokenService;
 
     /**
      * POST /auth/login : Аутентификация пользователя
@@ -141,7 +140,7 @@ public class AuthControllerImpl {
     public Mono<TokenResponse> authRefreshTokenPost(@Parameter(name = "TokenRefreshRequest", description = "", required = true)
                                                     @Valid
                                                     @RequestBody TokenRefreshRequest tokenRefreshRequest) {
-        return tokenService.refresh(tokenRefreshRequest.toString());
+        return userService.authRefreshTokenPost(tokenRefreshRequest);
     }
 
     /**
