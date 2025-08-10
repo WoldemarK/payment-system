@@ -24,46 +24,50 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // --- SPRING BOOT STARTERS ---
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // --- SPRING CLOUD ---
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-micrometer'
+
+    // --- PERSISTENCE & AUDITING ---
+    implementation 'org.hibernate.orm:hibernate-envers'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // --- METRICS & LOGGING ---
     runtimeOnly 'io.micrometer:micrometer-registry-otlp'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
+    implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
+
+    // --- LOMBOK ---
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    // --- TESTING ---
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
-    implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudStarterOpenfeignVersion}"
-
-    implementation "io.github.openfeign:feign-micrometer:${feignMicrometerVersion}"
-    implementation "org.hibernate.orm:hibernate-envers"
-
-    //  ЗАВИСИМОСТИ ДЛЯ ТЕСТИРОВАНИЯ
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation platform("org.junit:junit-bom:$junitBomVersion")
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${junitJupiter}"
-    testImplementation "com.github.dasniko:testcontainers-keycloak:${testcontainersKeycloakVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'io.projectreactor:reactor-test'
 
-    // LOMBOK
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation "org.testcontainers:testcontainers:$testcontainersVersion"
+    testImplementation "org.testcontainers:postgresql"
+    testImplementation "com.github.dasniko:testcontainers-keycloak:$testcontainersKeycloakVersion"
 
-    // METRICS
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation "net.logstash.logback:logstash-logback-encoder:$logstashVersion"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation platform("org.junit:junit-bom:$junitBomVersion")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+        mavenBom "org.junit:junit-bom:$junitBomVersion"
+    }
 }
 
 test {

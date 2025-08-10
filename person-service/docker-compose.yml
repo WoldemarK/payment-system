@@ -1,11 +1,13 @@
 services:
-  postgres-service-person:
+  postgres:
     image: postgres:17
     container_name: service-person
-    environment:
-      POSTGRES_DB: persin
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: user
+    restart: always
+    hostname: postgres
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_DB: service-person
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
 

@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -23,12 +24,18 @@ public abstract class BaseEntity
         implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator
+            (
+                    name = "UUID",
+                    strategy = "org.hibernate.id.UUIDGenerator"
+            )
     @Column
             (
-                    columnDefinition = "BINARY(16)",
+                    name = "id",
                     updatable = false,
-                    nullable = false
+                    nullable = false,
+                    columnDefinition = "UUID DEFAULT uuid_generate_v4()"
             )
     private UUID id;
 

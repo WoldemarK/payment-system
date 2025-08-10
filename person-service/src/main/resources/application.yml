@@ -1,0 +1,43 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: service-person
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/service-person
+    username: user
+    password: user
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        # Envers settings
+        default_schema: public
+    database: postgresql
+
+  envers:
+    enabled: true
+    store_data_at_delete: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
