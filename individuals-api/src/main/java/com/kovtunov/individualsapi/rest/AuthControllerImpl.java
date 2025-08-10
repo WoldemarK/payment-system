@@ -1,6 +1,5 @@
 package com.kovtunov.individualsapi.rest;
 
-import com.kovtunov.individualsapi.service.TokenService;
 import com.kovtunov.individualsapi.service.UserService;
 import com.kovtunov.individualsapi.validation.interfaces.ValidateRegistrationRequest;
 import com.kovtunov.individualsapi.validation.interfaces.ValidationUserLoginRequest;
