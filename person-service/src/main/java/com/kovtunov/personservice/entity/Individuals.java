@@ -19,7 +19,8 @@ import org.hibernate.envers.Audited;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "individuals")
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies
+        .SnakeCaseStrategy.class)
 public class Individuals extends BaseEntityAudit {
 
     private String status;
