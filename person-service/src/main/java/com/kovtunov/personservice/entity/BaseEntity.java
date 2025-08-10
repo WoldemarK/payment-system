@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -20,23 +22,11 @@ import java.util.UUID;
 @ToString
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = false)
-public abstract class BaseEntity
-        implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator
-            (
-                    name = "UUID",
-                    strategy = "org.hibernate.id.UUIDGenerator"
-            )
-    @Column
-            (
-                    name = "id",
-                    updatable = false,
-                    nullable = false,
-                    columnDefinition = "UUID DEFAULT uuid_generate_v4()"
-            )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+
 
 }

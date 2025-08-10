@@ -35,7 +35,6 @@ dependencies {
 
     // --- PERSISTENCE & AUDITING ---
     implementation 'org.hibernate.orm:hibernate-envers'
-    runtimeOnly 'org.postgresql:postgresql'
 
     // --- METRICS & LOGGING ---
     runtimeOnly 'io.micrometer:micrometer-registry-otlp'
@@ -55,15 +54,17 @@ dependencies {
 
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation "org.testcontainers:testcontainers:$testcontainersVersion"
-    testImplementation "org.testcontainers:postgresql"
+    implementation 'org.postgresql:postgresql:42.7.7'
     testImplementation "com.github.dasniko:testcontainers-keycloak:$testcontainersKeycloakVersion"
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation platform("org.junit:junit-bom:$junitBomVersion")
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    // --- Flyway starter ---
-    implementation 'org.flywaydb:flyway-core:11.8.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+
 }
 
 dependencyManagement {
