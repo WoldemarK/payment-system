@@ -8,11 +8,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
 
 import org.hibernate.envers.Audited;
-
+@Data
 @Entity
 @Audited
 @Builder
@@ -26,15 +27,8 @@ public class Countries {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(length = 32)
     private String name;
-
-    @Column(length = 2)
     private String alpha2;
-
-    @Column(length = 3)
     private String alpha3;
-
-    @Column(length = 32)
     private String status;
 }
