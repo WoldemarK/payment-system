@@ -23,10 +23,6 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public abstract class BaseEntity implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private UUID id;
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
