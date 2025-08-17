@@ -11,7 +11,7 @@ import com.kovtunov.personservice.entity.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserMapper {
+public class CustomMapper {
 
     public UserDTO toDtoUser(User user) {
         if (user == null) return null;

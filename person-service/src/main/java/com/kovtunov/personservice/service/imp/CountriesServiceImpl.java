@@ -2,6 +2,7 @@ package com.kovtunov.personservice.service.imp;
 
 import com.kovtunov.personservice.entity.Countries;
 import com.kovtunov.personservice.exception.CountriesNotFoundException;
+import com.kovtunov.personservice.exception.UserNotFoundException;
 import com.kovtunov.personservice.repository.CountriesRepository;
 import com.kovtunov.personservice.service.CountriesService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -19,27 +21,29 @@ public class CountriesServiceImpl implements CountriesService {
 
     private final CountriesRepository countriesRepository;
 
+    @Override
     @Transactional(rollbackFor = SQLException.class)
     public Countries addCountry(Countries country) {
-        if (country == null) {
-            throw new IllegalArgumentException("Country cannot be null");
-        }
-        if (country.getName() == null || country.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Country name cannot be null or empty");
+        log.info("In addCountry {}", country);
+
+        if (Objects.isNull(country)) {
+            throw new CountriesNotFoundException("Country cannot be null%s".formatted(country));
         }
         return countriesRepository.save(country);
     }
 
     @Override
     public Countries getCountryById(Long id) {
+        log.info("In getCountryById {}", id);
         return countriesRepository.findById(id)
-                .orElseThrow(() -> new CountriesNotFoundException("Country not found with id: " + id));
+                .orElseThrow(() -> new CountriesNotFoundException("Country not found with id: %d".formatted(id)));
     }
 
     @Override
     public Countries getCountryByName(String name) {
+        log.info("In getCountryByName {}", name);
         return countriesRepository.findByName(name)
-                .orElseThrow(() -> new CountriesNotFoundException("Country not found with name: " + name));
+                .orElseThrow(() -> new CountriesNotFoundException("Country not found with name: %s".formatted(name)));
     }
 
     @Override
@@ -49,8 +53,9 @@ public class CountriesServiceImpl implements CountriesService {
 
     @Override
     public List<Countries> searchCountries(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Search term cannot be empty");
+        log.info("In searchCountries {}", name);
+        if (Objects.isNull(name) || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Search term cannot be empty%s".formatted(name));
         }
         return countriesRepository.findByNameContainingIgnoreCase(name);
     }

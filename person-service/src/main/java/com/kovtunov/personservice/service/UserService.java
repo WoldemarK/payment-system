@@ -8,9 +8,13 @@ import java.util.UUID;
 
 public interface UserService {
 
-    void createFullUser(AllInformationDTO allInformationDTO);
+    AllInformationDTO createFullUser(AllInformationDTO allInformationDTO);
+
+    User createOnlyUser(User user);
 
     List<User> getAllUsers();
 
     User getUserByUUID(UUID uuid);
+
+    User findByEmail(String email);
 }

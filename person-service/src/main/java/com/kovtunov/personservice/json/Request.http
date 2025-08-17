@@ -1,0 +1,26 @@
+{
+  "user": {
+    "filled": true,
+    "firstName": "Иван",
+    "lastName": "Иванов",
+    "secretKey": "abc123xyz",
+    "email": "ivan.ivanov@example.com"
+  },
+  "address": {
+    "city": "Москва",
+    "state": "Московская область",
+    "address": "ул. Ленина, д. 10, кв. 5",
+    "zipCode": "123456"
+  },
+  "countries": {
+    "name": "Россия",
+    "alpha2": "RU",
+    "alpha3": "RUS",
+    "status": "ACTIVE"
+  },
+  "individuals": {
+    "status": "ACTIVE",
+    "phoneNumber": "+79161234567",
+    "passportNumber": "1234567890"
+  }
+}
