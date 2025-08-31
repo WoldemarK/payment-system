@@ -20,7 +20,7 @@ services:
     networks:
       - individuals-api-network
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/realms/master/.well-known/openid-configuration"]
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8080/realms/master/.well-known/openid-configuration" ]
       interval: 10s
       timeout: 5s
       retries: 20
@@ -60,6 +60,33 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+
+  postgres-person-service:
+    image: postgres:15
+    container_name: postgres-person
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres-person
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+    networks:
+      - individuals-api-network
+
+  person-service:
+    image: person-service:latest
+    container_name: app-person-service
+    ports:
+      - "8098:8098"
+    build:
+      context: ./person-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - individuals-api-network
+
 
   individuals-api:
     image: individuals-api:latest
@@ -145,3 +172,6 @@ services:
 networks:
   individuals-api-network:
     driver: bridge
+
+volumes:
+  postgres_data:

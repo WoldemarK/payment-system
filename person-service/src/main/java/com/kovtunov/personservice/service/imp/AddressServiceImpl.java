@@ -1,6 +1,5 @@
 package com.kovtunov.personservice.service.imp;
 
-import com.kovtunov.personservice.dto.AddressDTO;
 import com.kovtunov.personservice.entity.Address;
 import com.kovtunov.personservice.exception.AddressNotFoundException;
 import com.kovtunov.personservice.repository.AddressRepository;
@@ -8,8 +7,6 @@ import com.kovtunov.personservice.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Slf4j
 @Service

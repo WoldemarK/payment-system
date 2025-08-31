@@ -1,9 +1,9 @@
 package com.kovtunov.personservice.rest;
 
-import com.kovtunov.personservice.dto.CountriesDTO;
 import com.kovtunov.personservice.entity.Countries;
 import com.kovtunov.personservice.mapper.CustomMapper;
 import com.kovtunov.personservice.service.CountriesService;
+import com.kovtynov.person_service.api.dto.CountriesDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +38,7 @@ public class CountriesRestController {
     public ResponseEntity<List<CountriesDTO>> getAll() {
         log.info("In getAllCountries");
         List<Countries> countries = countriesService.getAllCountries();
-        return ResponseEntity.ok(countries.stream()
-                .map(mapper::toDtoCountries)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(countries.stream().map(mapper::toDtoCountries).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
@@ -61,8 +59,6 @@ public class CountriesRestController {
     public ResponseEntity<List<CountriesDTO>> search(@RequestParam String name) {
         log.info("In searchCountryByName {}", name);
         List<Countries> countries = countriesService.searchCountries(name);
-        return ResponseEntity.ok(countries.stream()
-                .map(mapper::toDtoCountries)
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(countries.stream().map(mapper::toDtoCountries).collect(Collectors.toList()));
     }
 }

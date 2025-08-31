@@ -1,13 +1,13 @@
 package com.kovtunov.personservice.mapper;
 
-import com.kovtunov.personservice.dto.AddressDTO;
-import com.kovtunov.personservice.dto.CountriesDTO;
-import com.kovtunov.personservice.dto.IndividualsDTO;
-import com.kovtunov.personservice.dto.UserDTO;
 import com.kovtunov.personservice.entity.Address;
 import com.kovtunov.personservice.entity.Countries;
 import com.kovtunov.personservice.entity.Individuals;
 import com.kovtunov.personservice.entity.User;
+import com.kovtynov.person_service.api.dto.AddressDTO;
+import com.kovtynov.person_service.api.dto.CountriesDTO;
+import com.kovtynov.person_service.api.dto.IndividualsDTO;
+import com.kovtynov.person_service.api.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 @Service

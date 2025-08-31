@@ -1,13 +1,12 @@
 package com.kovtunov.personservice.rest;
-
-import com.kovtunov.personservice.dto.AllInformationDTO;
-import com.kovtunov.personservice.dto.ErrorDto;
-import com.kovtunov.personservice.dto.UserDTO;
 import com.kovtunov.personservice.entity.User;
 import com.kovtunov.personservice.exception.UserNotFoundException;
 import com.kovtunov.personservice.exception.UserWithDuplicateEmailException;
 import com.kovtunov.personservice.mapper.CustomMapper;
 import com.kovtunov.personservice.service.UserService;
+import com.kovtynov.person_service.api.dto.AllInformationDTO;
+import com.kovtynov.person_service.api.dto.ErrorDto;
+import com.kovtynov.person_service.api.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "$springBootVersion"
     id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+    id "org.openapi.generator" version "$openApiGeneratorPluginVersion"
 }
 
 group = 'com.kovtunov'
@@ -13,10 +14,40 @@ java {
     }
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = file("${projectDir}/openapi/person-api.yaml").absolutePath
+    outputDir.set(file("build/generated-src/openapi").absolutePath)
+    //apiPackage = "com.kovtynov.person_service.api.client"
+    modelPackage = "com.kovtynov.person_service.api.dto"
+    configOptions = [
+            library                       : "spring-cloud",
+            useFeignClients               : "true",
+            interfaceOnly                 : "true",
+            useSpringAnnotations          : "true",
+            useJakartaEe                  : "true",
+            additionalModelTypeAnnotations: """
+        @lombok.Data
+        @lombok.Builder
+        @lombok.NoArgsConstructor
+        @lombok.AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+    """.stripIndent()
+    ]
+    globalProperties = [
+            "models": ""
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated-src/openapi/src/main/java"
+        }
     }
+}
+
+tasks.named('compileJava') {
+    dependsOn('openApiGenerate')
 }
 
 repositories {
@@ -24,14 +55,16 @@ repositories {
 }
 
 dependencies {
+
     // --- SPRING BOOT STARTERS ---
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // --- SPRING CLOUD ---
+    // --- SPRING CLOUD & FEIGN ---
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'io.github.openfeign:feign-micrometer'
+    implementation 'io.github.openfeign:feign-httpclient'
 
     // --- PERSISTENCE & AUDITING ---
     implementation 'org.hibernate.orm:hibernate-envers'
@@ -45,7 +78,19 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
-    // --- TESTING ---
+    // --- OPENAPI / SWAGGER ---
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openapiStarterWebfluxVersion}"
+
+    // --- VALIDATION ---
+    implementation "javax.validation:validation-api:${validationApiVersion}"
+    implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+
+    // --- POSTGRESQL ---
+    implementation 'org.postgresql:postgresql:42.7.7'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // --- ТЕСТИРОВАНИЕ ---
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -54,17 +99,11 @@ dependencies {
 
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation "org.testcontainers:testcontainers:$testcontainersVersion"
-    implementation 'org.postgresql:postgresql:42.7.7'
     testImplementation "com.github.dasniko:testcontainers-keycloak:$testcontainersKeycloakVersion"
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation platform("org.junit:junit-bom:$junitBomVersion")
     testImplementation 'org.junit.jupiter:junit-jupiter'
-
-//    implementation 'org.flywaydb:flyway-core'
-//    implementation 'org.flywaydb:flyway-database-postgresql'
-    runtimeOnly 'org.postgresql:postgresql'
-
 }
 
 dependencyManagement {

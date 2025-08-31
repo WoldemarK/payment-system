@@ -1,10 +1,5 @@
 package com.kovtunov.personservice.service.imp;
 
-import com.kovtunov.personservice.dto.AddressDTO;
-import com.kovtunov.personservice.dto.AllInformationDTO;
-import com.kovtunov.personservice.dto.CountriesDTO;
-import com.kovtunov.personservice.dto.IndividualsDTO;
-import com.kovtunov.personservice.dto.UserDTO;
 import com.kovtunov.personservice.entity.Address;
 import com.kovtunov.personservice.entity.Countries;
 import com.kovtunov.personservice.entity.Individuals;
@@ -16,6 +11,11 @@ import com.kovtunov.personservice.repository.IndividualsRepository;
 import com.kovtunov.personservice.repository.UserRepository;
 import com.kovtunov.personservice.service.CountriesService;
 import com.kovtunov.personservice.service.UserService;
+import com.kovtynov.person_service.api.dto.AddressDTO;
+import com.kovtynov.person_service.api.dto.AllInformationDTO;
+import com.kovtynov.person_service.api.dto.CountriesDTO;
+import com.kovtynov.person_service.api.dto.IndividualsDTO;
+import com.kovtynov.person_service.api.dto.UserDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save
                 (
                         User.builder()
-                                .filled(userDto.isFilled())
+                                .filled(userDto.getFilled())
                                 .lastName(userDto.getLastName())
                                 .firstName(userDto.getFirstName())
                                 .secretKey(userDto.getSecretKey())

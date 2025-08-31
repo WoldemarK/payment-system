@@ -6,7 +6,7 @@ spring:
     name: service-person
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/service-person
+    url: jdbc:postgresql://localhost:5432/postgres-person
     username: user
     password: user
     driver-class-name: org.postgresql.Driver
@@ -25,12 +25,6 @@ spring:
   envers:
     enabled: true
     store_data_at_delete: true
-
-#  flyway:
-#    enabled: true
-#    locations: classpath:db/migration
-#    baseline-on-migrate: true
-#    validate-on-migrate: true
 
 management:
   endpoints:
@@ -52,3 +46,6 @@ management:
 logging:
   level:
     org.flywaydb: DEBUG
+
+  # Url на который будет уходить запрос в person-service сервис
+feignClientUrl: http://inventory:8080/api

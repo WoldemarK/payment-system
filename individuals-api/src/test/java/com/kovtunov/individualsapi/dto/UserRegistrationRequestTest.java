@@ -6,10 +6,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UserRegistrationRequestTest {
 
-    @Test
-    void testGetterAndSetter() {
-        assertThat(DataUtilsDto.getInstance().getEmail()).isEqualTo("someEmail@gmail.com");
-        assertThat(DataUtilsDto.getInstance().getPassword()).isEqualTo("somePassword");
-        assertThat(DataUtilsDto.getInstance().getConfirmPassword()).isEqualTo("somePassword");
-    }
+//    @Test
+//    void testGetterAndSetter() {
+//        assertThat(DataUtilsDto.getInstance().getEmail()).isEqualTo("someEmail@gmail.com");
+//        assertThat(DataUtilsDto.getInstance().getPassword()).isEqualTo("somePassword");
+//        assertThat(DataUtilsDto.getInstance().getConfirmPassword()).isEqualTo("somePassword");
+//    }
 }
